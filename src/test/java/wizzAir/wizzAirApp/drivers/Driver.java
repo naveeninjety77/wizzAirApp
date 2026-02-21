@@ -3,51 +3,93 @@ package wizzAir.wizzAirApp.drivers;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.options.XCUITestOptions;
-import org.openqa.selenium.WebElement;
 import wizzAir.wizzAirApp.utils.ConfigReader;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * This Class responsible for creating AppiumDriver instances for supported platforms.
+ * Factory class responsible for creating AppiumDriver instances for Android and
+ * iOS (Emulator + Real Devices).
  */
 public final class Driver {
 
-    private Driver() {
-    }
+	private Driver() {
+		throw new UnsupportedOperationException("Utility class");
+	}
 
-    public static AppiumDriver<WebElement> createDriver(String platform, ConfigReader cfg) {
-        platform = platform == null ? "android" : platform.toLowerCase();
-        String server = cfg.get("appiumServer", "");
+	public static AppiumDriver createDriver(String platform, ConfigReader cfg) {
 
-        try {
-            URL serverUrl = new URL(server);
+		String normalizedPlatform = (platform == null || platform.isEmpty()) ? "android"
+				: platform.trim().toLowerCase();
 
-            if (platform.equals("android")) {
-                UiAutomator2Options options = new UiAutomator2Options();
-                options.setDeviceName(cfg.get("deviceName", "Android Emulator"));
-                options.setApp(cfg.get("appPath", "./src/test/resources/apps/android.apk"));
-                options.setAutomationName(cfg.get("automationName", "UiAutomator2"));
-                String platformVersion = cfg.get("platformVersion", null);
-                if (platformVersion != null) options.setPlatformVersion(platformVersion);
-                return new AppiumDriver<>(serverUrl, options);
+		String server = require(cfg.get("appiumServer", null), "Appium server URL is not configured.");
 
-            } else if (platform.equals("ios")) {
-                XCUITestOptions options = new XCUITestOptions();
-                options.setDeviceName(cfg.get("deviceName", "iPhone Simulator"));
-                options.setApp(cfg.get("appPath", "./src/test/resources/apps/ios.app"));
-                options.setAutomationName(cfg.get("automationName", "XCUITest"));
-                String platformVersion = cfg.get("platformVersion", null);
-                if (platformVersion != null) options.setPlatformVersion(platformVersion);
-                return new AppiumDriver<>(serverUrl, options);
+		try {
+			URL serverUrl = new URL(server);
+			switch (normalizedPlatform) {
+			case ("android"):
+				createAndroidDriver(serverUrl, cfg);
+			case ("ios"):
+				createIOSDriver(serverUrl, cfg);
+			default:
+				throw new IllegalArgumentException("Unsupported platform: " + platform);
 
-            } else {
-                throw new IllegalArgumentException("Unsupported platform: " + platform);
-            }
+			}
 
-        } catch (MalformedURLException e) {
-            throw new RuntimeException("Invalid Appium server URL", e);
-        }
-    }
+		} catch (MalformedURLException e) {
+			throw new IllegalArgumentException("Invalid Appium server URL: " + server, e);
+		}
+	}
+
+	// ================= ANDROID =================
+
+	private static AppiumDriver createAndroidDriver(URL serverUrl, ConfigReader cfg) {
+
+		UiAutomator2Options options = new UiAutomator2Options().setDeviceName(cfg.get("deviceName", "Android Emulator"))
+				.setAutomationName("UiAutomator2");
+
+		setIfPresent(cfg.get("platformVersion", null), options::setPlatformVersion);
+		setIfPresent(cfg.get("udid", null), options::setUdid);
+		setIfPresent(cfg.get("appPath", null), options::setApp);
+		setIfPresent(cfg.get("appPackage", null), options::setAppPackage);
+		setIfPresent(cfg.get("appActivity", null), options::setAppActivity);
+
+		options.setNoReset(Boolean.parseBoolean(cfg.get("noReset", "false")));
+		options.setFullReset(Boolean.parseBoolean(cfg.get("fullReset", "false")));
+
+		return new AppiumDriver(serverUrl, options);
+	}
+
+	// ================= IOS =================
+
+	private static AppiumDriver createIOSDriver(URL serverUrl, ConfigReader cfg) {
+
+		XCUITestOptions options = new XCUITestOptions().setDeviceName(cfg.get("deviceName", "iPhone Simulator"))
+				.setAutomationName("XCUITest");
+
+		setIfPresent(cfg.get("platformVersion", null), options::setPlatformVersion);
+		setIfPresent(cfg.get("udid", null), options::setUdid);
+		setIfPresent(cfg.get("appPath", null), options::setApp);
+
+		options.setNoReset(Boolean.parseBoolean(cfg.get("noReset", "false")));
+		options.setFullReset(Boolean.parseBoolean(cfg.get("fullReset", "false")));
+
+		return new AppiumDriver(serverUrl, options);
+	}
+
+	// ================= UTILITIES =================
+
+	private static String require(String value, String message) {
+		if (value == null || value.isEmpty()) {
+			throw new IllegalArgumentException(message);
+		}
+		return value;
+	}
+
+	private static void setIfPresent(String value, java.util.function.Consumer<String> setter) {
+		if (value != null && !value.isEmpty()) {
+			setter.accept(value);
+		}
+	}
 }

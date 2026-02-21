@@ -8,22 +8,22 @@ import org.openqa.selenium.WebElement;
  * run in parallel without sharing driver state.
  */
 public final class DriverManager {
-    private static final ThreadLocal<AppiumDriver<WebElement>> DRIVER = new ThreadLocal<>();
+    private static final ThreadLocal<AppiumDriver> DRIVER = new ThreadLocal<>();
 
     private DriverManager() {
         // utility
     }
 
-    public static void setDriver(AppiumDriver<WebElement> driver) {
+    public static void setDriver(AppiumDriver driver) {
         DRIVER.set(driver);
     }
 
-    public static AppiumDriver<WebElement> getDriver() {
+    public static AppiumDriver getDriver() {
         return DRIVER.get();
     }
 
     public static void quitDriver() {
-        AppiumDriver<WebElement> driver = DRIVER.get();
+        AppiumDriver driver = DRIVER.get();
         if (driver != null) {
             try {
                 driver.quit();
