@@ -1,11 +1,11 @@
-package com.wizzairapp.pages;
+package com.wizzairapp.base.pages;
 
 
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
 
-import com.wizzairapp.drivers.DriverManager;
+import com.wizzairapp.base.drivers.DriverManager;
 
 import io.appium.java_client.AppiumDriver;
 

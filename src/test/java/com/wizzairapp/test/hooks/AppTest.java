@@ -1,4 +1,4 @@
-package com.wizzairapp;
+package com.wizzairapp.test.hooks;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

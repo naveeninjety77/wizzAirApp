@@ -1,8 +1,8 @@
-package com.wizzairapp.hooks;
+package com.wizzairapp.test.hooks;
 
-import com.wizzairapp.drivers.Driver;
-import com.wizzairapp.drivers.DriverManager;
-import com.wizzairapp.utils.ConfigReader;
+import com.wizzairapp.base.drivers.Driver;
+import com.wizzairapp.base.drivers.DriverManager;
+import com.wizzairapp.base.utils.ConfigReader;
 
 import io.cucumber.java.After;
 import io.cucumber.java.Before;

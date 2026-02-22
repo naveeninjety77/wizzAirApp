@@ -1,4 +1,4 @@
-package com.wizzairapp.base;
+package com.wizzairapp.base.utils;
 
 public class App 
 {

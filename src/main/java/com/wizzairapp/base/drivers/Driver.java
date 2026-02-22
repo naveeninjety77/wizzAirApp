@@ -1,10 +1,10 @@
-package com.wizzairapp.drivers;
+package com.wizzairapp.base.drivers;
 
 
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import com.wizzairapp.utils.ConfigReader;
+import com.wizzairapp.base.utils.ConfigReader;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
