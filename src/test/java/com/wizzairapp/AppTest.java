@@ -1,4 +1,4 @@
-package wizzAir.wizzAirApp;
+package com.wizzairapp;
 
 import junit.framework.Test;
 import junit.framework.TestCase;

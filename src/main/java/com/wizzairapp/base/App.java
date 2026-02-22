@@ -1,4 +1,4 @@
-package wizzAir.wizzAirApp;
+package com.wizzairapp.base;
 
 public class App 
 {

@@ -1,4 +1,4 @@
-package wizzAir.wizzAirApp.drivers;
+package com.wizzairapp.drivers;
 
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.WebElement;

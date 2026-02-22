@@ -1,4 +1,4 @@
-package wizzAir.wizzAirApp.utils;
+package com.wizzairapp.utils;
 
 import java.io.IOException;
 import java.io.InputStream;

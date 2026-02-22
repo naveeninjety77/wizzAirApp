@@ -1,12 +1,14 @@
-package wizzAir.wizzAirApp.drivers;
+package com.wizzairapp.drivers;
+
+
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import com.wizzairapp.utils.ConfigReader;
 
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.options.UiAutomator2Options;
 import io.appium.java_client.ios.options.XCUITestOptions;
-import wizzAir.wizzAirApp.utils.ConfigReader;
-
-import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Factory class responsible for creating AppiumDriver instances for Android and
