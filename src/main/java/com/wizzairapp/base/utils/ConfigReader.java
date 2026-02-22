@@ -5,33 +5,49 @@ import java.io.InputStream;
 import java.util.Properties;
 
 /**
- * Simple config reader that prefers system properties and falls back to
- * values in src/test/resources/config.properties.
+ * Setup ConfigReader.
  */
-public final class ConfigReader {
-    private static final String CONFIG_PATH = "/config.properties";
-    private static final ConfigReader INSTANCE = new ConfigReader();
+public class ConfigReader {
+
     private final Properties props = new Properties();
 
-    private ConfigReader() {
-        // load defaults from resources if available
-        try (InputStream in = getClass().getResourceAsStream(CONFIG_PATH)) {
-            if (in != null) props.load(in);
-        } catch (IOException ignored) {
+    public ConfigReader(String env) {
+        loadEnvironmentConfig(env);
+    }
+
+    private void loadEnvironmentConfig(String env) {
+        String configPath = "/config-" + env + ".properties";
+
+        try (InputStream in = getClass().getResourceAsStream(configPath)) {
+            if (in != null) {
+                props.load(in);
+            } else {
+                throw new RuntimeException("Configuration file not found: " + configPath);
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load config file: " + configPath, e);
         }
     }
 
-    public static ConfigReader getInstance() {
-        return INSTANCE;
+    /**
+     * Get property with priority:
+     * System property > config file > default
+     */
+    public String get(String key, String defaultValue) {
+
+        String sys = System.getProperty(key);
+        if (sys != null && !sys.isEmpty()) {
+            return sys;
+        }
+
+        String value = props.getProperty(key);
+        return value != null ? value : defaultValue;
     }
 
     /**
-     * Returns the value for the key. System property overrides resource property.
+     * Runtime override support (used when XML passes deviceName etc.)
      */
-    public String get(String key, String defaultValue) {
-        String sys = System.getProperty(key);
-        if (sys != null && !sys.isEmpty()) return sys;
-        String p = props.getProperty(key);
-        return p != null ? p : defaultValue;
+    public void set(String key, String value) {
+        props.setProperty(key, value);
     }
 }

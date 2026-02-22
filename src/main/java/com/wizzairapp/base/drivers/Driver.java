@@ -28,16 +28,19 @@ public final class Driver {
 		String server = require(cfg.get("appiumServer", null), "Appium server URL is not configured.");
 
 		try {
-			URL serverUrl = new URL(server);
-			switch (normalizedPlatform) {
-			case ("android"):
-				createAndroidDriver(serverUrl, cfg);
-			case ("ios"):
-				createIOSDriver(serverUrl, cfg);
-			default:
-				throw new IllegalArgumentException("Unsupported platform: " + platform);
+	        URL serverUrl = new URL(server);
 
-			}
+	        switch (normalizedPlatform) {
+	            case "android":
+	                return createAndroidDriver(serverUrl, cfg);
+
+	            case "ios":
+	                return createIOSDriver(serverUrl, cfg);
+
+	            default:
+	                throw new IllegalArgumentException(
+	                        "Unsupported platform: " + platform);
+	        }
 
 		} catch (MalformedURLException e) {
 			throw new IllegalArgumentException("Invalid Appium server URL: " + server, e);

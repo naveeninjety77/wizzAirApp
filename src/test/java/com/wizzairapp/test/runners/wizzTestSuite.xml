@@ -1,0 +1,8 @@
+<suite name="MobileSuite">
+    <test name="Android">
+        <parameter name="platform" value="android"/>
+        <classes>
+            <class name="com.wizzairapp.test.runner.testRunner"/>
+        </classes>
+    </test>
+</suite>
