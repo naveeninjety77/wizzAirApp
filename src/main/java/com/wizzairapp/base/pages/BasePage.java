@@ -1,6 +1,7 @@
 package com.wizzairapp.base.pages;
 
 
+import io.appium.java_client.InteractsWithApps;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
@@ -31,6 +32,13 @@ public abstract class BasePage {
             Files.createDirectories(dst.getParent());
             Files.copy(src.toPath(), dst);
         } catch (Exception ignored) {
+        }
+    }
+
+    public void activateApp(String appId) {
+        AppiumDriver d = driver();
+        if (d != null && d instanceof InteractsWithApps) {
+            ((InteractsWithApps) d).activateApp(appId);
         }
     }
 }

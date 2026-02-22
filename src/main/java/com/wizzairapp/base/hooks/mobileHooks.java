@@ -1,4 +1,4 @@
-package com.wizzairapp.test.hooks;
+package com.wizzairapp.base.hooks;
 
 import com.wizzairapp.base.drivers.Driver;
 import com.wizzairapp.base.drivers.DriverManager;
