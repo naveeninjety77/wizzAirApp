@@ -2,6 +2,7 @@ package com.wizzairapp.base.pages;
 
 
 import io.appium.java_client.InteractsWithApps;
+import io.appium.java_client.pagefactory.AppiumFieldDecorator;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebElement;
@@ -9,7 +10,9 @@ import org.openqa.selenium.WebElement;
 import com.wizzairapp.base.drivers.DriverManager;
 
 import io.appium.java_client.AppiumDriver;
-
+import org.openqa.selenium.support.PageFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -19,15 +22,21 @@ import java.nio.file.Path;
  */
 public abstract class BasePage {
 
-    protected AppiumDriver driver() {
-        return DriverManager.getDriver();
+    protected AppiumDriver driver;
+    protected final Logger log = LoggerFactory.getLogger(getClass());
+
+    public BasePage(AppiumDriver driver) {
+        this.driver = driver;
+        PageFactory.initElements(
+                new AppiumFieldDecorator(driver),
+                this
+        );
     }
 
     protected void takeScreenshot(String name) {
         try {
-            AppiumDriver d = driver();
-            if (d == null) return;
-            File src = ((TakesScreenshot) d).getScreenshotAs(OutputType.FILE);
+            if (driver == null) return;
+            File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
             Path dst = Path.of("target", "screenshots", name + ".png");
             Files.createDirectories(dst.getParent());
             Files.copy(src.toPath(), dst);
@@ -36,9 +45,8 @@ public abstract class BasePage {
     }
 
     public void activateApp(String appId) {
-        AppiumDriver d = driver();
-        if (d != null && d instanceof InteractsWithApps) {
-            ((InteractsWithApps) d).activateApp(appId);
+        if (driver instanceof InteractsWithApps) {
+            ((InteractsWithApps) driver).activateApp(appId);
         }
     }
 }

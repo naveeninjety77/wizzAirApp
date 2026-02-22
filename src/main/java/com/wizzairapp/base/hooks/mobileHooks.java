@@ -3,7 +3,8 @@ package com.wizzairapp.base.hooks;
 import com.wizzairapp.base.drivers.Driver;
 import com.wizzairapp.base.drivers.DriverManager;
 import com.wizzairapp.base.utils.ConfigReader;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import io.appium.java_client.AppiumDriver;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
@@ -14,6 +15,7 @@ import io.cucumber.java.Scenario;
  * Thread-safe and CI compatible.
  */
 public class mobileHooks {
+    private static final Logger log = LoggerFactory.getLogger(mobileHooks.class);
 
     @Before(order = 0)
     public void beforeScenario(Scenario scenario) {
@@ -37,6 +39,7 @@ public class mobileHooks {
 
         AppiumDriver driver = Driver.createDriver(platform, config);
         DriverManager.setDriver(driver);
+        log.info("========== START SCENARIO: {} ==========", scenario.getName());
     }
 
     @After(order = 0)
@@ -46,5 +49,6 @@ public class mobileHooks {
             // Add screenshot logic here later
         }
         DriverManager.quitDriver();
+        log.info("========== END SCENARIO: {} | STATUS: {} ==========", scenario.getName(), scenario.getStatus());
     }
 }

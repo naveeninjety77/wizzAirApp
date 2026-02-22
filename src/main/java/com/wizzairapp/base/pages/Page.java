@@ -1,18 +1,27 @@
 package com.wizzairapp.base.pages;
 
-import org.openqa.selenium.support.PageFactory;
+
+import com.wizzairapp.base.drivers.DriverManager;
+import io.appium.java_client.AppiumDriver;
 
 /**
- * Home page / landing screen interactions (skeleton).
+ * Page have all the objects of the pages
  */
-public class HomePage extends BasePage {
 
-    public HomePage() {
-        PageFactory.initElements(driver(), this);
-    }
+    public class Page {
 
-    public void waitForHomeToLoad() {
+        private AppiumDriver driver;
 
-        try { Thread.sleep(500); } catch (InterruptedException ignored) {}
-    }
+        public Page() {
+            this.driver = DriverManager.getDriver();
+        }
+
+        public HomePage homePO() {
+            return new HomePage(driver);
+        }
+
+        public LoginPage loginPO() {
+            return new LoginPage(driver);
+        }
+
 }
