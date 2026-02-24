@@ -6,4 +6,10 @@
             <class name="com.wizzairapp.test.runners.testRunner"/>
         </classes>
     </test>
+    <test name="Android">
+        <parameter name="platform" value="ios"/>
+        <classes>
+            <class name="com.wizzairapp.test.runners.testRunner"/>
+        </classes>
+    </test>
 </suite>

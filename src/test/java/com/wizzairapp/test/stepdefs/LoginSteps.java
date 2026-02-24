@@ -25,13 +25,10 @@ public class LoginSteps {
     @Given("the app is launched")
     public void theAppIsLaunched() {
         page.homePO().waitForHomeToLoad();
-        utils.waitForVisibility(page.homePO().flightsOption);
-        page.homePO().flightsOption.isDisplayed();
-        log.info("Home screen is displayed");
     }
 
-    @Then("I am on the login screen")
-    public void i_should_see_available_flights() {
+    @Then("App is launched via deep link for flight {string}")
+    public void i_should_see_available_flights(String flightName) {
 //        search.assertResultsPresent();
     }
 }

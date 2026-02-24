@@ -24,4 +24,8 @@ import io.appium.java_client.AppiumDriver;
             return new LoginPage(driver);
         }
 
+    public FlightPage flightPO() {
+        return new FlightPage(driver);
+    }
+
 }

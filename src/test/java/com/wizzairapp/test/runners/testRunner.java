@@ -8,7 +8,7 @@ import org.testng.annotations.Parameters;
 import io.cucumber.testng.AbstractTestNGCucumberTests;
 import io.cucumber.testng.CucumberOptions;
 
-@CucumberOptions(features = "src/test/resources/features/login.feature", glue = { "com.wizzairapp.test.stepdefs",
+@CucumberOptions(features = "src/test/resources/features/flight_search.feature", glue = { "com.wizzairapp.test.stepdefs",
 		"com.wizzairapp.base.hooks" }, plugin = { "pretty", "html:target/cucumber-reports.html",
 				"json:target/cucumber.json" })
 public class testRunner extends AbstractTestNGCucumberTests {

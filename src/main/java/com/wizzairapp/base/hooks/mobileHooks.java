@@ -51,4 +51,19 @@ public class mobileHooks {
         DriverManager.quitDriver();
         log.info("========== END SCENARIO: {} | STATUS: {} ==========", scenario.getName(), scenario.getStatus());
     }
+
+    @After
+    public void tearDown() {
+        if (DriverManager.getDriver() != null) {
+            try {
+                log.info("Closing driver session...");
+                DriverManager.quitDriver();
+                log.info("Driver closed successfully.");
+            } catch (Exception e) {
+                log.error("Error while closing driver.", e);
+            }
+        } else {
+            log.warn("Driver was already null. Nothing to close.");
+        }
+    }
 }
