@@ -1,5 +1,5 @@
-
-Feature: Flight Search with Infinite Scroll
+Author : Naveen Injety
+Feature: Search Flight from the flight list
 
   Background:
     Given the app is launched

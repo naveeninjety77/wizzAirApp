@@ -1,4 +1,7 @@
+Author : Naveen Injety
 Feature: Price Change During Booking
+  Background:
+    Given the app is launched
 
   @booking @priceChange @android @ios
   Scenario: Handle price change modal during booking
