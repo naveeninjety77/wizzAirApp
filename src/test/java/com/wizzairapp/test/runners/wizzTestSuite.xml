@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.1.dtd">
+<suite name="MobileSuite">
+    <test name="Android">
+        <parameter name="platform" value="android"/>
+        <classes>
+            <class name="com.wizzairapp.test.runners.testRunner"/>
+        </classes>
+    </test>
+    <test name="Android">
+        <parameter name="platform" value="ios"/>
+        <classes>
+            <class name="com.wizzairapp.test.runners.testRunner"/>
+        </classes>
+    </test>
+</suite>
